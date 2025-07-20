@@ -17,22 +17,22 @@ on:
           - Release
         default: Pre-Release
       include_wild:
-        description: 'Include WILD?'
+        description: "Include WILD?"
         required: true
         type: boolean
         default: false
       include_ksu:
-        description: 'Include KSU?'
+        description: "Include KSU?"
         required: true
         type: boolean
         default: false
       include_next:
-        description: 'Include NEXT?'
+        description: "Include NEXT?"
         required: true
         type: boolean
         default: true
       include_mksu:
-        description: 'Include MKSU?'
+        description: "Include MKSU?"
         required: true
         type: boolean
         default: false
@@ -141,18 +141,18 @@ jobs:
 
       - name: Generate and Create New Tag
         run: |
-            LATEST_TAG=$(gh api repos/${{ github.repository }}/tags --jq '.[0].name')
-            if [ -z "$LATEST_TAG" ]; then
-              LATEST_TAG="v1.5.9-r0"
-            fi
+          LATEST_TAG=$(gh api repos/${{ github.repository }}/tags --jq '.[0].name')
+          if [ -z "$LATEST_TAG" ]; then
+            LATEST_TAG="v1.5.9-r0"
+          fi
 
-            NEW_TAG=$(echo "$LATEST_TAG" | awk -F'-r' '{suffix=$2; if (!suffix) suffix=0; suffix++; printf "%s-r%d", $1, suffix}')
+          NEW_TAG=$(echo "$LATEST_TAG" | awk -F'-r' '{suffix=$2; if (!suffix) suffix=0; suffix++; printf "%s-r%d", $1, suffix}')
 
-            echo "New tag: $NEW_TAG"
-            echo "NEW_TAG=${NEW_TAG}" >> $GITHUB_ENV
+          echo "New tag: $NEW_TAG"
+          echo "NEW_TAG=${NEW_TAG}" >> $GITHUB_ENV
 
-            git tag $NEW_TAG
-            git push origin $NEW_TAG
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
