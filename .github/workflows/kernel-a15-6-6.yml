@@ -1,4 +1,4 @@
-name: Build Kernel - A15
+name: Kernel Config - A15 6.6
 
 permissions:
   contents: write  # Allow writing to repository contents
@@ -7,16 +7,10 @@ permissions:
 on:
   workflow_call:
     inputs:
-      kernelsu_variant:
+
+      use_make:
         required: true
-        type: string
-      kernelsu_branch:
-        required: true
-        type: string
-      kernelsu_branch_other:
-        required: false
-        type: string
-        default: ""
+        type: boolean
 
 jobs:
   build-kernels-a15:
@@ -24,10 +18,10 @@ jobs:
       fail-fast: true
       matrix:
         include:
-          #- sub_level: "30"
-          #  os_patch_level: "2024-08"
-          #- sub_level: "46"
-          #  os_patch_level: "2024-09"
+          - sub_level: "30"
+            os_patch_level: "2024-08"
+          - sub_level: "46"
+            os_patch_level: "2024-09"
           - sub_level: "50"
             os_patch_level: "2024-10"
           - sub_level: "56"
@@ -57,6 +51,5 @@ jobs:
       kernel_version: "6.6"
       sub_level: ${{ matrix.sub_level }}
       os_patch_level: ${{ matrix.os_patch_level }}
-      kernelsu_variant: ${{ inputs.kernelsu_variant }}
-      kernelsu_branch: ${{ inputs.kernelsu_branch }}
-      kernelsu_branch_other: ${{ inputs.kernelsu_branch_other || '' }}}
+
+      use_make: ${{ inputs.use_make }}
